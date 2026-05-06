@@ -1,0 +1,20 @@
+venv/
+**/__pycache__/
+*.pyc
+*.pyo
+.env
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Données générées
+data/vector_store/
+data/*.sqlite*
+data/*.db
+
+# Données personnelles et propriétaires
+data/my_profile.txt
+data/pdfs/
+
+# OS
+.DS_Store
+Thumbs.db
