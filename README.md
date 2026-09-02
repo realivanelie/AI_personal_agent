@@ -1,6 +1,6 @@
 # AI Personal Agent
 
-Agent intelligent multi-modules conçu pour les étudiants en Master IA — automatisation académique, recherche de stage, et planification d'études.
+Agent intelligent multi-modules conçu après mon cours sur les agents,LangChain,LangGraph pour les étudiants en Master IA — automatisation académique, recherche de stage ou alternance, et planification d'études.
 
 **Projet personnel de Master BIHAR (Big Data & IA) — ESTIA, Bidart**  
 Stack : LangGraph · LangChain · Ollama · ChromaDB · FastAPI · Streamlit
