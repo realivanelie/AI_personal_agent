@@ -1,5 +1,5 @@
 from langchain_community.chat_models import ChatOllama
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from app.rag.retriever import retrieve_context
 from app.memory.storage import save_exchange

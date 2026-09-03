@@ -1,7 +1,7 @@
 from typing import TypedDict, Literal
 from langgraph.graph import StateGraph, END
 from langchain_community.chat_models import ChatOllama
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from app.agents.course_agent import run_course_agent
 from app.agents.internship_agent import run_internship_search

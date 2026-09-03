@@ -1,4 +1,4 @@
-from langchain.memory import ConversationBufferWindowMemory
+from langchain_classic.memory import ConversationBufferWindowMemory
 from typing import List, Dict
 
 # Mémoire globale de la session (window = 10 derniers échanges)

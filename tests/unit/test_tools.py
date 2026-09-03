@@ -13,11 +13,13 @@ from unittest.mock import patch, MagicMock, mock_open
 
 class TestSearchInternships:
 
-    @patch("app.tools.search.DuckDuckGoSearchRun")
-    def test_returns_string_result(self, mock_ddg_cls):
+    @patch("app.tools.search.DDGS")
+    def test_returns_string_result(self, mock_ddgs_cls):
         mock_instance = MagicMock()
-        mock_instance.run.return_value = "Offre 1 : Data Scientist chez Airbus..."
-        mock_ddg_cls.return_value = mock_instance
+        mock_instance.text.return_value = [
+            {"title": "Data Scientist", "body": "Offre chez Airbus...", "href": "https://example.com/1"}
+        ]
+        mock_ddgs_cls.return_value.__enter__.return_value = mock_instance
 
         from app.tools.search import search_internships
         result = search_internships("Data Scientist Paris")
@@ -25,40 +27,40 @@ class TestSearchInternships:
         assert isinstance(result, str)
         assert len(result) > 0
 
-    @patch("app.tools.search.DuckDuckGoSearchRun")
-    def test_query_is_enriched_with_context(self, mock_ddg_cls):
+    @patch("app.tools.search.DDGS")
+    def test_query_is_enriched_with_context(self, mock_ddgs_cls):
         mock_instance = MagicMock()
-        mock_instance.run.return_value = "résultats"
-        mock_ddg_cls.return_value = mock_instance
+        mock_instance.text.return_value = []
+        mock_ddgs_cls.return_value.__enter__.return_value = mock_instance
 
         from app.tools.search import search_internships
         search_internships("MLOps")
 
-        called_query = mock_instance.run.call_args[0][0]
+        called_query = mock_instance.text.call_args[0][0]
         assert "MLOps" in called_query
         assert "stage" in called_query.lower()
 
-    @patch("app.tools.search.DuckDuckGoSearchRun")
-    def test_empty_query_still_calls_search(self, mock_ddg_cls):
+    @patch("app.tools.search.DDGS")
+    def test_empty_query_still_calls_search(self, mock_ddgs_cls):
         mock_instance = MagicMock()
-        mock_instance.run.return_value = ""
-        mock_ddg_cls.return_value = mock_instance
+        mock_instance.text.return_value = []
+        mock_ddgs_cls.return_value.__enter__.return_value = mock_instance
 
         from app.tools.search import search_internships
-        result = search_internships("")
-        mock_instance.run.assert_called_once()
+        search_internships("")
+        mock_instance.text.assert_called_once()
 
-    @patch("app.tools.search.DuckDuckGoSearchRun")
-    def test_targets_expected_job_sites(self, mock_ddg_cls):
+    @patch("app.tools.search.DDGS")
+    def test_targets_expected_job_sites(self, mock_ddgs_cls):
         mock_instance = MagicMock()
-        mock_instance.run.return_value = "résultats"
-        mock_ddg_cls.return_value = mock_instance
+        mock_instance.text.return_value = []
+        mock_ddgs_cls.return_value.__enter__.return_value = mock_instance
 
         from app.tools.search import search_internships
         search_internships("NLP")
 
-        called_query = mock_instance.run.call_args[0][0]
-        assert "linkedin.com" in called_query or "welcometothejungle.com" in called_query
+        called_query = mock_instance.text.call_args[0][0]
+        assert "stage" in called_query.lower() and "alternance" in called_query.lower()
 
 
 # ===========================================================================
