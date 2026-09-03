@@ -609,7 +609,7 @@ if module == "home":
         )
     with col2:
         card(
-            "Module Stage · Matching",
+            "Module Stage , Alternance · Matching",
             "Recherche automatisée d'offres, scoring de compatibilité IA sur 100, génération de lettres de motivation et emails RH personnalisés.",
             "💼", "green"
         )

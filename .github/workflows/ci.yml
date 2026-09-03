@@ -159,13 +159,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull de l'image buildée (tag SHA)
+      - name: Pull de l'image buildée (par digest)
         run: |
-          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
-          # Le tag SHA généré par metadata-action est les 7 premiers caractères
-          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          docker pull "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${SHORT_SHA}"
-          echo "IMAGE_REF=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${SHORT_SHA}" >> $GITHUB_ENV
+          IMAGE_REF="${REGISTRY}/${GITHUB_REPOSITORY,,}@${{ needs.build.outputs.image_digest }}"
+          docker pull "$IMAGE_REF"
+          echo "IMAGE_REF=$IMAGE_REF" >> $GITHUB_ENV
 
       - name: Lancement du conteneur API
         run: |
@@ -209,8 +207,8 @@ jobs:
 
       - name: Logs du conteneur en cas d'échec
         if: failure()
-        run: docker logs ai-agent-api
+        run: docker logs ai-agent-api || true
 
       - name: Arrêt et suppression du conteneur
         if: always()
-        run: docker stop ai-agent-api && docker rm ai-agent-api
+        run: docker rm -f ai-agent-api || true
